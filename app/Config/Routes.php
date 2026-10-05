@@ -18,5 +18,12 @@ $routes->group('api', function ($api) {
             $users->put('(:segment)', 'Api\UserController::UpdateUserController/$1');
             $users->delete('(:segment)', 'Api\UserController::DeleteUserController/$1');
         });
+        $user->group('posts', function ($posts) {
+            $posts->get('/', 'Api\PostController::GetPostsController');
+            $posts->get('(:segment)', 'Api\PostController::GetPostController/$1');
+            $posts->post('/', 'Api\PostController::CreatePostController/$1');
+            $posts->put('(:segment)', 'Api\PostController::UpdatePostController/$1');
+            $posts->delete('(:segment)', 'Api\PostController::DeletePostController/$1');
+        });
     });
 });

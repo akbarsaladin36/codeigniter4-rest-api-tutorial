@@ -14,10 +14,10 @@ class JwtFilter implements FilterInterface
 {
     public function before(RequestInterface $request, $arguments = null)
     {
-        $header = $request->getServer('HTTP_AUTHORIZATION');
+        $header = $request->getHeaderLine('Authorization');
 
-        if (!$header) {
-            return Services::response()->setJSON(['status' => 401, 'message' => 'Token tidak ditemukan!'])->setStatusCode(401);
+        if (empty($header) || !str_starts_with($header, 'Bearer ')) {
+            return Services::response()->setJSON(['status' => 401, 'message' => 'Token tidak ditemukan atau format salah!'])->setStatusCode(401);
         }
 
         $token = trim(str_replace('Bearer ', '', $header));
@@ -25,7 +25,8 @@ class JwtFilter implements FilterInterface
         try {
             $key = getenv('JWT_SECRET_KEY');
             $decoded = JWT::decode($token, new Key($key, 'HS256'));
-            $request->authUser = $decoded;
+            $request->authUser = (array)$decoded;
+            return $request;
         } catch (Exception $e) {
             return Services::response()->setJSON(['status' => 500, 'message' => $e->getMessage()])->setStatusCode(500);
         }

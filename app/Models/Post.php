@@ -4,20 +4,20 @@ namespace App\Models;
 
 use CodeIgniter\Model;
 
-class User extends Model
+class Post extends Model
 {
-    protected $table            = 'users';
+    protected $table            = 'posts';
     protected $primaryKey       = 'id';
     protected $useAutoIncrement = true;
-    // protected $returnType       = 'array';
-    // protected $protectFields    = true;
-    protected $allowedFields    = ['username', 'email', 'password', 'full_name', 'address', 'phone_number', 'created_at', 'updated_at'];
-
+    protected $returnType       = 'array';
+    protected $useSoftDeletes   = false;
+    protected $protectFields    = true;
+    protected $allowedFields    = ['user_id', 'slug', 'title', 'description', 'tags', 'status', 'created_at', 'updated_at'];
     protected bool $allowEmptyInserts = false;
     protected bool $updateOnlyChanged = true;
 
-    protected array $casts = [];
-    protected array $castHandlers = [];
+    // protected array $casts = [];
+    // protected array $castHandlers = [];
 
     // Dates
     protected $useTimestamps = false;
@@ -26,13 +26,13 @@ class User extends Model
     protected $updatedField  = 'updated_at';
     protected $deletedField  = 'deleted_at';
 
-    // Validation
+    // // Validation
     // protected $validationRules      = [];
     // protected $validationMessages   = [];
     // protected $skipValidation       = false;
     // protected $cleanValidationRules = true;
 
-    // Callbacks
+    // // Callbacks
     // protected $allowCallbacks = true;
     // protected $beforeInsert   = [];
     // protected $afterInsert    = [];
